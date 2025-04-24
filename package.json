@@ -1,0 +1,28 @@
+{
+  "name": "api_practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "concurrently \"yarn run watch-ts\" \"yarn run start-server\"",
+    "watch-ts": "tsc --watch",
+    "start-server": "nodemon ./dist/server.js --ignore db.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@types/uuid": "^10.0.0",
+    "express": "^5.1.0",
+    "lowdb": "^7.0.1",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9"
+  }
+}
