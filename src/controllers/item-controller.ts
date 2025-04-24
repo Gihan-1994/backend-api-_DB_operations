@@ -24,8 +24,9 @@ export class ItemController {
             db.data?.items.push(newItem);
             await db.write();
             res.status(200).json({message: 'Item added successfully'});
-        } catch (error) {
-            res.status(400).json({message: 'Error adding item'});
+        } catch (ex) {
+            const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+            res.status(400).json({message: 'Error adding item', error: errorMessage});
         }
     }
 
@@ -33,8 +34,9 @@ export class ItemController {
         try {
             await db.read();
             res.status(200).json({message: 'Items', Items: db.data?.items});
-        } catch (error) {
-            res.status(400).json({message: 'Error getting items'});
+        } catch (ex) {
+            const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+            res.status(400).json({message: 'Error getting items' , error: errorMessage});
         }
     }
 
@@ -47,7 +49,7 @@ export class ItemController {
             throw new Error("Name and id is required")
             await db.read();
             const itemIndex = db.data?.items.findIndex((item) => item.id === parseInt(id));
-            if (!itemIndex) {
+            if (itemIndex === -1) {
                 throw new Error("Item not found")
             }
             db.data.items[itemIndex] = {
@@ -57,7 +59,8 @@ export class ItemController {
             await db.write();
             res.status(200).json({message: 'Item updated successfully'});
         } catch (ex) {
-            res.status(400).json({message: 'Error updating item', error: ex});
+            const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+            res.status(400).json({message: 'Error updating item', error: errorMessage});
         }
     }
 
@@ -66,7 +69,7 @@ export class ItemController {
         try {
             await db.read();
             const itemIndex = db.data?.items.findIndex((item) => item.id === parseInt(id));
-            if (!itemIndex) {
+            if (itemIndex === -1) {
                 throw new Error("Item not found");
             }
             // db.data.items = db.data.items.filter((item) => item.id !== parseInt(id));
@@ -74,7 +77,8 @@ export class ItemController {
             await db.write();
             res.status(200).json({message: 'Item deleted successfully'});
         } catch (ex) {
-            res.status(400).json({message: 'Error deleting item', error: ex});
+            const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+            res.status(400).json({message: 'Error deleting item', error: errorMessage});
         }
     }
 }
