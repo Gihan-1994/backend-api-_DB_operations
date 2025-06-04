@@ -1,17 +1,19 @@
 import express from 'express';
 import {Response, Request} from 'express';
-import {initializeDatabase, db} from "./configs/db.js";
 import itemRoutes from "./routes/item-routes.js";
-
+import {connectToMongoDB} from "./configs/mongodb";
+import {MongoClient} from "mongodb";
 const app = express();
 const port = 3000;
 
-//Initialize Database
-initializeDatabase().then(
-    () => {
-        console.log('Database initialized ✔');
+// connect to MongoDB
+export const mongoDbClient: Promise<MongoClient> = connectToMongoDB().then(
+    (client) => {
+        console.log('🐱‍ connected to MongoDB');
+        return client;
     }
 );
+
 // Middlewares
 //Json Parser
 app.use(express.json());
