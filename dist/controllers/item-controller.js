@@ -10,89 +10,71 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ItemController = void 0;
-const db_js_1 = require("../configs/db.js");
+const mongoose_schema_1 = require("../models/mongoose_schema");
 class ItemController {
     static createItem(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            const { name } = req.body;
+            const { name, age } = req.body;
             try {
                 if (!name)
                     throw new Error("Name is required");
-                if (!db_js_1.db.data) {
-                    throw new Error('Database not initialized');
-                }
-                const newId = (potentialID = db_js_1.db.data.items.length + 1) => {
-                    const itemExsists = db_js_1.db.data.items.some(item => item.id === potentialID);
-                    return itemExsists ? newId(potentialID + 1) : potentialID;
-                };
-                const newItem = {
-                    id: newId(),
-                    name
-                };
-                (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items.push(newItem);
-                yield db_js_1.db.write();
-                res.status(200).json({ message: 'Item added successfully' });
+                let potentialID = 0;
+                const newID = () => __awaiter(this, void 0, void 0, function* () {
+                    do {
+                        const count = yield mongoose_schema_1.ItemModel.countDocuments();
+                        potentialID = count + 1;
+                    } while (yield mongoose_schema_1.ItemModel.exists({ uid: potentialID }));
+                    return potentialID;
+                });
+                const id = yield newID();
+                const newItem = new mongoose_schema_1.ItemModel({
+                    name,
+                    age,
+                    uid: id
+                });
+                const result = yield newItem.save();
+                res.status(200).json({ message: 'Item added successfully 👍', result });
             }
             catch (ex) {
-                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
-                res.status(400).json({ message: 'Error adding item', error: errorMessage });
+                const errorMessage = ex instanceof Error ? ex.message : '🐞Unknown error occurred';
+                res.status(400).json({ message: '🐞Error adding item', error: errorMessage });
             }
         });
     }
     static getItems(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
             try {
-                yield db_js_1.db.read();
-                res.status(200).json({ message: 'Items', Items: (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items });
+                const result = yield mongoose_schema_1.ItemModel.find({});
+                res.status(200).json({ message: '😉Items', result });
             }
             catch (ex) {
-                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
-                res.status(400).json({ message: 'Error getting items', error: errorMessage });
+                const errorMessage = ex instanceof Error ? ex.message : '🐞Unknown error occurred';
+                res.status(400).json({ message: '🐞Error getting items', error: errorMessage });
             }
         });
     }
     static updateItem(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            const { id } = req.params;
-            const { name } = req.body;
+            const { uid } = req.params;
+            const { name, age } = req.body;
             try {
-                if (!name || !id)
-                    throw new Error("Name and id is required");
-                yield db_js_1.db.read();
-                const itemIndex = (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items.findIndex((item) => item.id === parseInt(id));
-                if (itemIndex === -1) {
-                    throw new Error("Item not found");
-                }
-                db_js_1.db.data.items[itemIndex] = {
-                    id: parseInt(id),
-                    name
-                };
-                yield db_js_1.db.write();
-                res.status(200).json({ message: 'Item updated successfully' });
+                if ((!name || !age) && !uid)
+                    throw new Error("🤔 Name or age and id is required");
+                const result = yield mongoose_schema_1.ItemModel.findOneAndUpdate({ uid: parseInt(uid) }, { name, age }, { options: { new: true } });
+                res.status(200).json({ message: '😉Item updated successfully', result });
             }
             catch (ex) {
-                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
-                res.status(400).json({ message: 'Error updating item', error: errorMessage });
+                const errorMessage = ex instanceof Error ? ex.message : '🐞Unknown error occurred';
+                res.status(400).json({ message: '🐞Error updating item', error: errorMessage });
             }
         });
     }
     static deleteItem(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            var _a;
-            const { id } = req.params;
+            const { uid } = req.params;
             try {
-                yield db_js_1.db.read();
-                const itemIndex = (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items.findIndex((item) => item.id === parseInt(id));
-                if (itemIndex === -1) {
-                    throw new Error("Item not found");
-                }
-                // db.data.items = db.data.items.filter((item) => item.id !== parseInt(id));
-                db_js_1.db.data.items.splice(itemIndex, 1);
-                yield db_js_1.db.write();
-                res.status(200).json({ message: 'Item deleted successfully' });
+                const result = yield mongoose_schema_1.ItemModel.findOneAndDelete({ uid: parseInt(uid) });
+                res.status(200).json({ message: 'Item deleted successfully', result });
             }
             catch (ex) {
                 const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';

@@ -4,15 +4,33 @@ import itemRoutes from "./routes/item-routes.js";
 import * as mongoose from "mongoose";
 import { config } from "dotenv";
 
+
 config();
 
-const MONGODB_URI = process.env.MONGODB_ATLAS_URI;
+const {MONGODB_ATLAS_URI} = process.env;
 
 const app = express();
 const port = 3000;
 
 //Initialize Database
-await mongoose.connect(MONGODB_URI);
+
+
+ mongoose.connect(MONGODB_ATLAS_URI!, {
+     dbName: 'Mongoose_Users'
+ },
+     ).then(() => {
+     console.log("Database connected successfully ✅ ");
+     // mongoose.connection.on('connected', () => {
+     //     console.log('Database connected successfully ✅');
+     //     console.log(`Connected to DB: ${mongoose.connection.name}`);
+     // });
+     //
+     // mongoose.connection.on('error', (err) => {
+     //     console.error(`Mongoose connection error ❌: ${err.message}`);
+     // });
+ }).catch((error: unknown) => {
+    console.error('Database connect error ❌',(error as Error).message);
+ })
 // Middlewares
 //Json Parser
 app.use(express.json());

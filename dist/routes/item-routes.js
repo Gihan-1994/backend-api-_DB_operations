@@ -8,6 +8,6 @@ const item_controller_js_1 = require("../controllers/item-controller.js");
 const router = express_1.default.Router();
 router.post('/add-items', item_controller_js_1.ItemController.createItem);
 router.get('/get-items', item_controller_js_1.ItemController.getItems);
-router.put('/update-item/:id', item_controller_js_1.ItemController.updateItem);
-router.delete('/delete-item/:id', item_controller_js_1.ItemController.deleteItem);
+router.put('/update-item/:uid', item_controller_js_1.ItemController.updateItem);
+router.delete('/delete-item/:uid', item_controller_js_1.ItemController.deleteItem);
 exports.default = router;
