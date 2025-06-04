@@ -16,13 +16,13 @@ class ItemController {
         return __awaiter(this, void 0, void 0, function* () {
             const { name, age } = req.body;
             try {
-                if (!name)
-                    throw new Error("Name is required");
-                let potentialID = 0;
+                if (!name || !age)
+                    throw new Error("Name and age is required");
                 const newID = () => __awaiter(this, void 0, void 0, function* () {
+                    let potentialID = 0;
                     do {
-                        const count = yield mongoose_schema_1.ItemModel.countDocuments();
-                        potentialID = count + 1;
+                        potentialID++;
+                        console.log('🎃 potentialID', potentialID);
                     } while (yield mongoose_schema_1.ItemModel.exists({ uid: potentialID }));
                     return potentialID;
                 });

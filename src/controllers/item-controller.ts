@@ -9,16 +9,16 @@ export class ItemController {
         const {name,age} = req.body;
 
         try {
-            if (!name)
-            throw new Error("Name is required")
-            let potentialID: number = 0;
+            if (!name || !age)
+            throw new Error("Name and age is required")
 
             const newID = async ():Promise<number> => {
-              do {
-                  const count = await ItemModel.countDocuments();
-                  potentialID = count + 1;
-              }while (await ItemModel.exists({uid: potentialID}))
 
+                let potentialID: number = 0;
+              do {
+                  potentialID++;
+                  console.log('🎃 potentialID',potentialID);
+              }while (await ItemModel.exists({uid: potentialID}))
               return potentialID;
             };
             const id = await newID();
