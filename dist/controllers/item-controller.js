@@ -16,9 +16,9 @@ class ItemController {
         return __awaiter(this, void 0, void 0, function* () {
             var _a;
             const { name } = req.body;
-            if (!name)
-                return res.status(400).json({ massage: 'Name is required' });
             try {
+                if (!name)
+                    throw new Error("Name is required");
                 if (!db_js_1.db.data) {
                     throw new Error('Database not initialized');
                 }
@@ -34,8 +34,9 @@ class ItemController {
                 yield db_js_1.db.write();
                 res.status(200).json({ message: 'Item added successfully' });
             }
-            catch (error) {
-                res.status(400).json({ message: 'Error adding item' });
+            catch (ex) {
+                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+                res.status(400).json({ message: 'Error adding item', error: errorMessage });
             }
         });
     }
@@ -46,8 +47,9 @@ class ItemController {
                 yield db_js_1.db.read();
                 res.status(200).json({ message: 'Items', Items: (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items });
             }
-            catch (error) {
-                res.status(400).json({ message: 'Error getting items' });
+            catch (ex) {
+                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+                res.status(400).json({ message: 'Error getting items', error: errorMessage });
             }
         });
     }
@@ -56,13 +58,13 @@ class ItemController {
             var _a;
             const { id } = req.params;
             const { name } = req.body;
-            if (!name || !id)
-                return res.status(400).json({ massage: 'Name and id is required' });
             try {
+                if (!name || !id)
+                    throw new Error("Name and id is required");
                 yield db_js_1.db.read();
                 const itemIndex = (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items.findIndex((item) => item.id === parseInt(id));
-                if (!itemIndex) {
-                    return res.status(404).json({ message: 'Item not found' });
+                if (itemIndex === -1) {
+                    throw new Error("Item not found");
                 }
                 db_js_1.db.data.items[itemIndex] = {
                     id: parseInt(id),
@@ -72,7 +74,8 @@ class ItemController {
                 res.status(200).json({ message: 'Item updated successfully' });
             }
             catch (ex) {
-                res.status(400).json({ message: 'Error updating item', error: ex });
+                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+                res.status(400).json({ message: 'Error updating item', error: errorMessage });
             }
         });
     }
@@ -83,8 +86,8 @@ class ItemController {
             try {
                 yield db_js_1.db.read();
                 const itemIndex = (_a = db_js_1.db.data) === null || _a === void 0 ? void 0 : _a.items.findIndex((item) => item.id === parseInt(id));
-                if (!itemIndex) {
-                    return res.status(404).json({ message: 'Item not found' });
+                if (itemIndex === -1) {
+                    throw new Error("Item not found");
                 }
                 // db.data.items = db.data.items.filter((item) => item.id !== parseInt(id));
                 db_js_1.db.data.items.splice(itemIndex, 1);
@@ -92,7 +95,8 @@ class ItemController {
                 res.status(200).json({ message: 'Item deleted successfully' });
             }
             catch (ex) {
-                res.status(400).json({ message: 'Error deleting item', error: ex });
+                const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
+                res.status(400).json({ message: 'Error deleting item', error: errorMessage });
             }
         });
     }

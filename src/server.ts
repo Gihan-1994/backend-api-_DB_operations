@@ -1,17 +1,18 @@
 import express from 'express';
 import {Response, Request} from 'express';
-import {initializeDatabase, db} from "./configs/db.js";
 import itemRoutes from "./routes/item-routes.js";
+import * as mongoose from "mongoose";
+import { config } from "dotenv";
+
+config();
+
+const MONGODB_URI = process.env.MONGODB_ATLAS_URI;
 
 const app = express();
 const port = 3000;
 
 //Initialize Database
-initializeDatabase().then(
-    () => {
-        console.log('Database initialized ✔');
-    }
-);
+await mongoose.connect(MONGODB_URI);
 // Middlewares
 //Json Parser
 app.use(express.json());
