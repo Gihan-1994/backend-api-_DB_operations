@@ -20,14 +20,14 @@ const port = 3000;
  },
      ).then(() => {
      console.log("Database connected successfully ✅ ");
-     // mongoose.connection.on('connected', () => {
-     //     console.log('Database connected successfully ✅');
-     //     console.log(`Connected to DB: ${mongoose.connection.name}`);
-     // });
-     //
-     // mongoose.connection.on('error', (err) => {
-     //     console.error(`Mongoose connection error ❌: ${err.message}`);
-     // });
+     mongoose.connection?.on('connected', () => {
+         console.log('Database connected  🎇');
+         console.log(`Connected to DB: ${mongoose.connection.name}`);
+     });
+
+     mongoose.connection?.on('error', (err) => {
+         console.error(`Mongoose connection error happened 🙄: ${err.message}`);
+     });
  }).catch((error: unknown) => {
     console.error('Database connect error ❌',(error as Error).message);
  })

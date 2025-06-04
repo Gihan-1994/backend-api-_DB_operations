@@ -48,15 +48,15 @@ const port = 3000;
 mongoose.connect(MONGODB_ATLAS_URI, {
     dbName: 'Mongoose_Users'
 }).then(() => {
+    var _a, _b;
     console.log("Database connected successfully ✅ ");
-    // mongoose.connection.on('connected', () => {
-    //     console.log('Database connected successfully ✅');
-    //     console.log(`Connected to DB: ${mongoose.connection.name}`);
-    // });
-    //
-    // mongoose.connection.on('error', (err) => {
-    //     console.error(`Mongoose connection error ❌: ${err.message}`);
-    // });
+    (_a = mongoose.connection) === null || _a === void 0 ? void 0 : _a.on('connected', () => {
+        console.log('Database connected  🎇');
+        console.log(`Connected to DB: ${mongoose.connection.name}`);
+    });
+    (_b = mongoose.connection) === null || _b === void 0 ? void 0 : _b.on('error', (err) => {
+        console.error(`Mongoose connection error happened 🙄: ${err.message}`);
+    });
 }).catch((error) => {
     console.error('Database connect error ❌', error.message);
 });
