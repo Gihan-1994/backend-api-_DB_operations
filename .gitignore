@@ -10,6 +10,8 @@
 #Node modules
 /node_modules/
 #Dist
-dist/
 
-#.env
+
+
+#.envdist/
+dist/
