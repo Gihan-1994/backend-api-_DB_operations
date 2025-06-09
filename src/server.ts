@@ -1,36 +1,37 @@
 import express from 'express';
 import {Response, Request} from 'express';
 import itemRoutes from "./routes/item-routes.js";
-import * as mongoose from "mongoose";
+import  mongoose from "mongoose";
 import { config } from "dotenv";
 
 
-config();
 
-const {MONGODB_ATLAS_URI} = process.env;
+config(
+    {
+        path: "./.env"
+    }
+);
+
+const MONGODB_ATLAS_URI: string = process.env.MONGODB_ATLAS_URI!;
 
 const app = express();
 const port = 3000;
 
 //Initialize Database
-
-
- mongoose.connect(MONGODB_ATLAS_URI!, {
-     dbName: 'Mongoose_Users'
- },
-     ).then(() => {
-     console.log("Database connected successfully ✅ ");
-     mongoose.connection?.on('connected', () => {
-         console.log('Database connected  🎇');
-         console.log(`Connected to DB: ${mongoose.connection.name}`);
-     });
-
-     mongoose.connection?.on('error', (err) => {
-         console.error(`Mongoose connection error happened 🙄: ${err.message}`);
-     });
- }).catch((error: unknown) => {
-    console.error('Database connect error ❌',(error as Error).message);
- })
+mongoose.connect(MONGODB_ATLAS_URI!, {
+    dbName: 'Mongoose_Users'},
+).then(() => {
+    console.log("Database connected successfully ✅ ");
+    // mongoose.connection.on('connected', () => {
+    //     console.log('Database connected  🎇');
+    //     console.log(`Connected to DB: ${mongoose.connection.name}`);
+    // });
+    // mongoose.connection.on('error', (err) => {
+    //     console.error(`Mongoose connection error happened 🙄: ${err.message}`);
+    // });
+}).catch((error: unknown) => {
+    console.error('Database connect error 🙄',(error as Error).message);
+})
 // Middlewares
 //Json Parser
 app.use(express.json());
@@ -42,7 +43,7 @@ app.use((req, res, next) => {
 })
 
 app.get('/', (req: Request, res: Response) => {
-    res.json('🐱‍Hello Gihan with Backend!');
+    res.json('🐱‍Hello Gihan with Backend running on port 3000!');
 });
 //routes middleware
 app.use('/api/v1/items', itemRoutes)

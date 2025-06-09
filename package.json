@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "concurrently \"yarn run watch-ts\" \"yarn run start-server\"",
     "watch-ts": "tsc --watch",
-    "start-server": "nodemon ./dist/server.js --ignore db.json"
+    "start-server": "nodemon ./dist/server.js --ignore db.json",
+    "build": "tsc",
+    "start": "node ./dist/server.js"
   },
   "keywords": [],
   "author": "",
