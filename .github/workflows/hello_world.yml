@@ -1,0 +1,19 @@
+name : Say Hello World
+description: Say hello to a user
+
+on:
+  push:
+    branches:
+      - mongoose-GCP
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [14, 16, 18]
+    name: Using Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Say hello world to Gihan
+        run: echo "Hello Gihan"
+        shell: bash

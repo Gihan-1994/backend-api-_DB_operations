@@ -49,6 +49,7 @@ describe('Server Tests', () => {
                 .expect(200);
 
             expect(response.body).toBe('🐱‍Hello Gihan with Backend running on port 3000!');
+
         });
 
         test('GET / should have correct content type', async () => {
