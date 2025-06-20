@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {db} from "../configs/db.js";
+
 import {ItemModel} from "../models/mongoose_schema";
 import {IItem} from "../models/mongoose_schema";
 
@@ -22,12 +22,17 @@ export class ItemController {
               return potentialID;
             };
             const id = await newID();
-            const newItem = new ItemModel(
-                {
-                    name,
-                    age,
-                    uid: id
-                });
+            // const newItem = await ItemModel.create(
+            //     {
+            //         name,
+            //         age,
+            //         uid: id
+            //     });
+            const newItem = new ItemModel({
+                name,
+                age,
+                uid: id
+            })
             const result = await newItem.save();
 
             res.status(200).json({message: 'Item added successfully 👍', result});
@@ -52,11 +57,16 @@ export class ItemController {
         const {name,age} = req.body;
 
         try {
-            if ((!name || !age) && !uid)
+            if ((!name || !age))
             throw new Error("🤔 Name or age and id is required")
 
+            const reqID = parseInt(uid);
+            if (Number.isNaN(reqID)) {
+                console.log('DEBUG - Throwing error: Invalid ID format');
+                throw new Error("🤔 Invalid ID format");
+            }
             const result = await ItemModel.findOneAndUpdate(
-                {uid: parseInt(uid)},
+                {uid: reqID},
                 {name,age },
                 {options : {new: true}});
             res.status(200).json({message: '😉Item updated successfully', result});
@@ -70,7 +80,7 @@ export class ItemController {
         const {uid} = req.params;
         try {
             const result = await ItemModel.findOneAndDelete({uid: parseInt(uid)});
-            res.status(200).json({message: 'Item deleted successfully', result});
+            res.status(200).json({message: 'Item deleted successfully 👍', result});
         } catch (ex) {
             const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
             res.status(400).json({message: 'Error deleting item', error: errorMessage});

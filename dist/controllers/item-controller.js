@@ -27,6 +27,12 @@ class ItemController {
                     return potentialID;
                 });
                 const id = yield newID();
+                // const newItem = await ItemModel.create(
+                //     {
+                //         name,
+                //         age,
+                //         uid: id
+                //     });
                 const newItem = new mongoose_schema_1.ItemModel({
                     name,
                     age,
@@ -58,9 +64,14 @@ class ItemController {
             const { uid } = req.params;
             const { name, age } = req.body;
             try {
-                if ((!name || !age) && !uid)
+                if ((!name || !age))
                     throw new Error("🤔 Name or age and id is required");
-                const result = yield mongoose_schema_1.ItemModel.findOneAndUpdate({ uid: parseInt(uid) }, { name, age }, { options: { new: true } });
+                const reqID = parseInt(uid);
+                if (Number.isNaN(reqID)) {
+                    console.log('DEBUG - Throwing error: Invalid ID format');
+                    throw new Error("🤔 Invalid ID format");
+                }
+                const result = yield mongoose_schema_1.ItemModel.findOneAndUpdate({ uid: reqID }, { name, age }, { options: { new: true } });
                 res.status(200).json({ message: '😉Item updated successfully', result });
             }
             catch (ex) {
@@ -74,7 +85,7 @@ class ItemController {
             const { uid } = req.params;
             try {
                 const result = yield mongoose_schema_1.ItemModel.findOneAndDelete({ uid: parseInt(uid) });
-                res.status(200).json({ message: 'Item deleted successfully', result });
+                res.status(200).json({ message: 'Item deleted successfully 👍', result });
             }
             catch (ex) {
                 const errorMessage = ex instanceof Error ? ex.message : 'Unknown error occurred';
