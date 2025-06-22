@@ -57,7 +57,7 @@ export class ItemController {
         const {name,age} = req.body;
 
         try {
-            if ((!name || !age))
+            if ((!name && !age))
             throw new Error("🤔 Name or age and id is required")
 
             const reqID = parseInt(uid);
@@ -65,9 +65,20 @@ export class ItemController {
                 console.log('DEBUG - Throwing error: Invalid ID format');
                 throw new Error("🤔 Invalid ID format");
             }
+            // Build update object with only provided fields
+            const updateFields: Partial<IItem> = {};
+            if (name !== undefined) {
+                updateFields.name = name;
+            }
+            if (age !== undefined) {
+                updateFields.age = age;
+            }
+
+
+
             const result = await ItemModel.findOneAndUpdate(
                 {uid: reqID},
-                {name,age },
+                updateFields,
                 {options : {new: true}});
             res.status(200).json({message: '😉Item updated successfully', result});
         } catch (ex) {

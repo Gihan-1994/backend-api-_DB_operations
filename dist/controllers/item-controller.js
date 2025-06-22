@@ -64,14 +64,22 @@ class ItemController {
             const { uid } = req.params;
             const { name, age } = req.body;
             try {
-                if ((!name || !age))
+                if ((!name && !age))
                     throw new Error("🤔 Name or age and id is required");
                 const reqID = parseInt(uid);
                 if (Number.isNaN(reqID)) {
                     console.log('DEBUG - Throwing error: Invalid ID format');
                     throw new Error("🤔 Invalid ID format");
                 }
-                const result = yield mongoose_schema_1.ItemModel.findOneAndUpdate({ uid: reqID }, { name, age }, { options: { new: true } });
+                // Build update object with only provided fields
+                const updateFields = {};
+                if (name !== undefined) {
+                    updateFields.name = name;
+                }
+                if (age !== undefined) {
+                    updateFields.age = age;
+                }
+                const result = yield mongoose_schema_1.ItemModel.findOneAndUpdate({ uid: reqID }, updateFields, { options: { new: true } });
                 res.status(200).json({ message: '😉Item updated successfully', result });
             }
             catch (ex) {

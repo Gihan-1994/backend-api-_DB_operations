@@ -1,0 +1,23 @@
+name : Integration Workflow
+description: Say hello to a user
+
+on:
+  push:
+    branches:
+      - mongoose-GCP
+jobs:
+  run-tests:
+    name: 'Run unit tests'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18]
+
+    steps:
+      - uses: actions/checkout@v4
+        name: "Checkout repository"
+      - name: 'Install Dependencies'
+        run: npm install
+        shell: bash
+      - name: 'Run tests'
+        run: npm run test
