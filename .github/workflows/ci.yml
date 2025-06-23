@@ -21,3 +21,6 @@ jobs:
         shell: bash
       - name: 'Run tests'
         run: npm run test
+        # Run linter to check code quality
+      - name: 'Run linter'
+        run: npx standard --fix
