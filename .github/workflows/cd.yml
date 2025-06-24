@@ -1,5 +1,6 @@
-Name : NodeJS CI
-Description: CI for NodeJS
+name : NodeJS CD
+description: Say hello to a user
+
 on:
   push:
     branches:
