@@ -1,0 +1,26 @@
+Name : NodeJS CI
+Description: CI for NodeJS
+on:
+  push:
+    branches:
+      - mongoose-GCP
+jobs:
+  build:
+    runs-on: [self-hosted]
+    env:
+      MONGODB_ATLAS_URI: ${{ secrets.MONGODB_ATLAS_URI }}
+    strategy:
+      matrix:
+        node-version: [18]
+    name: Using Node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: echo "CD on process"
+      - run: npm install
+      - run: npm run build
+      - run: npm start
+
