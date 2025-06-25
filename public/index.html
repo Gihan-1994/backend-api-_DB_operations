@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go HTTP Server</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+        }
+        p {
+            margin-bottom: 15px;
+        }
+        .code {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+        .instance-details {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            line-height: 1.6;
+        }
+        .instance-details p {
+            margin: 6px 0;
+        }
+        .instance-details span.label {
+            font-weight: bold;
+            color: #333;
+        }
+        .instance-details span.value {
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome to the Go HTTP Server</h1>
+
+    <h2>Server Information</h2>
+    <div class="instance-details">
+        <p><span class="label">Name:</span> <span class="value">backend-api</span></p>
+        <p><span class="label">Instance Id:</span> <span class="value">6382902217647891915</span></p>
+        <p><span class="label">Description:</span> <span class="value">None</span></p>
+        <p><span class="label">Type:</span> <span class="value">Instance</span></p>
+        <p><span class="label">Status:</span> <span class="value">Running</span></p>
+        <p><span class="label">Creation time:</span> <span class="value">Jun 23, 2025, 2:45:20 PM UTC+05:30</span></p>
+        <p><span class="label">Location:</span> <span class="value">asia-southeast1-a</span></p>
+        <p><span class="label">Instance template:</span> <span class="value">None</span></p>
+        <p><span class="label">In use by:</span> <span class="value">None</span></p>
+        <p><span class="label">Physical host:</span> <span class="value">None</span></p>
+        <p><span class="label">Maintenance status:</span> <span class="value">—</span></p>
+        <p><span class="label">Reservations:</span> <span class="value">Automatically choose</span></p>
+        <p><span class="label">Labels:</span> <span class="value">None</span></p>
+        <p><span class="label">Tags:</span> <span class="value">—</span></p>
+        <p><span class="label">Deletion protection:</span> <span class="value">Disabled</span></p>
+        <p><span class="label">Confidential VM service:</span> <span class="value">Disabled</span></p>
+        <p><span class="label">Preserved state size:</span> <span class="value">0 GB</span></p>
+    </div>
+
+    <h2>Request Details</h2>
+    <p><strong>Method:</strong> %s</p>
+    <p><strong>URL:</strong> %s</p>
+    <p><strong>Protocol:</strong> %s</p>
+
+
+
+    <div class="footer">
+        Server powered by Go | %s
+    </div>
+</div>
+</body>
+</html>

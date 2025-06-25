@@ -3,6 +3,7 @@ import {Response, Request} from 'express';
 import itemRoutes from "./routes/item-routes";
 import  mongoose from "mongoose";
 import { config } from "dotenv";
+import path from "node:path";
 
 config(
     {
@@ -46,6 +47,7 @@ mongoose.connect(MONGODB_ATLAS_URI!, {
 // Middlewares
 //Json Parser
 app.use(express.json());
+//app.use(express.static(path.join(__dirname, '../public')));
 
 //Custom Middlewares
 app.use((req, res, next) => {
@@ -55,6 +57,7 @@ app.use((req, res, next) => {
 
 app.get('/', (req: Request, res: Response) => {
     res.json('🐱‍Hello Gihan with Backend running on port 3000!');
+  //  res.sendFile(path.join(__dirname, '../public/index.html'))
 });
 //routes middleware
 app.use('/api/v1/items', itemRoutes)

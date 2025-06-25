@@ -57,6 +57,7 @@ mongoose.connect(MONGODB_ATLAS_URI!, {
 // Middlewares
 //Json Parser
 app.use(express_1.default.json());
+//app.use(express.static(path.join(__dirname, '../public')));
 //Custom Middlewares
 app.use((req, res, next) => {
     console.log("Hello from custom middleware 😉");
@@ -64,6 +65,7 @@ app.use((req, res, next) => {
 });
 app.get('/', (req, res) => {
     res.json('🐱‍Hello Gihan with Backend running on port 3000!');
+    //  res.sendFile(path.join(__dirname, '../public/index.html'))
 });
 //routes middleware
 app.use('/api/v1/items', item_routes_1.default);
