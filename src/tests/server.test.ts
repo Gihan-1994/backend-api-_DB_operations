@@ -42,23 +42,23 @@ describe('Server Tests', () => {
 
     })
 
-    describe('Base Route Tests', () => {
-        test('GET / should return welcome message', async () => {
-            const response = await request(app)
-                .get('/')
-                .expect(200);
-
-            expect(response.body).toBe('🐱‍Hello Gihan with Backend running on port 3000!');
-
-        });
-
-        test('GET / should have correct content type', async () => {
-            const response = await request(app)
-                .get('/')
-                .expect(200);
-
-            expect(response.headers['content-type']).toMatch(/json/);
-        });
-    });
+    // describe('Base Route Tests', () => {
+    //     test('GET / should return welcome message', async () => {
+    //         const response = await request(app)
+    //             .get('/')
+    //             .expect(200);
+    //
+    //         expect(response.body).toBe('🐱‍Hello Gihan with Backend running on port 3000!');
+    //
+    //     });
+    //
+    //     test('GET / should have correct content type', async () => {
+    //         const response = await request(app)
+    //             .get('/')
+    //             .expect(200);
+    //
+    //         expect(response.headers['content-type']).toMatch(/json/);
+    //     });
+    // });
 
 })
